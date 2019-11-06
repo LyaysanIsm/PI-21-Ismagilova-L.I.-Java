@@ -29,26 +29,26 @@ public class Airplane extends Vehicle {
 	public void MoveTransport(Direction direction) {
 		float step = MaxSpeed * 100 / Weight;
 		switch (direction) {
-		// вправо
+		// ГўГЇГ°Г ГўГ®
 		case Right:
 			if (_startPosX + step < _pictureWidth - planeWidth - 85) {
 				_startPosX += step;
 			}
 			break;
-		// влево
+		// ГўГ«ГҐГўГ®
 		case Left:
 			if (_startPosX - step > 0) {
 				_startPosX -= step;
 			}
 			break;
-		// вверх
+		// ГўГўГҐГ°Гµ
 		case Up:
 			if (_startPosY - step > 3) {
 
 				_startPosY -= step;
 			}
 			break;
-		// вниз
+		// ГўГ­ГЁГ§
 		case Down:
 			if (_startPosY + step < _pictureHeight - planeHeight - 100) {
 				_startPosY += step;
@@ -71,15 +71,7 @@ public class Airplane extends Vehicle {
 		g.setColor(Color.black);
 		g.drawOval(_startPosX + 80, _startPosY - 6, 40, 160);
 
-		/*
-		 * g.setColor(DopColor); if (Bullets) { g.fillOval( _startPosX + 48, _startPosY
-		 * + 40, 5, 25); g.fillOval( _startPosX + 59, _startPosY + 35, 5, 25);
-		 * g.fillOval( _startPosX + 70, _startPosY + 32, 5, 25);
-		 * 
-		 * g.fillOval( _startPosX + 145, _startPosY + 40, 5, 25); g.fillOval( _startPosX
-		 * + 134, _startPosY + 35, 5, 25); g.fillOval( _startPosX + 122, _startPosY +
-		 * 32, 5, 25); }
-		 */
+		weapons.DrawWeapons(g, DopColor, _startPosX + 50, _startPosY + 65);	
 
 		g.setColor(Color.yellow);
 		if (Cabin) {
