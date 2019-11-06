@@ -82,17 +82,7 @@ public class Airplane {
 		g.setColor(Color.black);
 		g.drawOval(_startPosX + 80, _startPosY - 6, 40, 160);
 
-		weapons.DrawWeapons(g, DopColor, _startPosX + 50, _startPosY + 65);
-
-		/*
-		 * g.setColor(DopColor); if (Bullets) { g.fillOval( _startPosX + 48, _startPosY
-		 * + 40, 5, 25); g.fillOval( _startPosX + 59, _startPosY + 35, 5, 25);
-		 * g.fillOval( _startPosX + 70, _startPosY + 32, 5, 25);
-		 * 
-		 * g.fillOval( _startPosX + 145, _startPosY + 40, 5, 25); g.fillOval( _startPosX
-		 * + 134, _startPosY + 35, 5, 25); g.fillOval( _startPosX + 122, _startPosY +
-		 * 32, 5, 25); }
-		 */
+		weapons.DrawWeapons(g, DopColor, _startPosX + 50, _startPosY + 65);	
 
 		g.setColor(Color.yellow);
 		if (Cabin) {
