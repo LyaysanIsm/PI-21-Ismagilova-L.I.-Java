@@ -67,15 +67,6 @@ public class Fighter extends Airplane {
 		}
 		super.DrawAirplane(g);
 
-		/*
-		 * g.setColor(DopColor); if (Bullets) { g.fillOval(_startPosX + 48, _startPosY +
-		 * 40, 5, 25); g.fillOval(_startPosX + 59, _startPosY + 35, 5, 25);
-		 * g.fillOval(_startPosX + 70, _startPosY + 32, 5, 25);
-		 * 
-		 * g.fillOval(_startPosX + 145, _startPosY + 40, 5, 25); g.fillOval(_startPosX +
-		 * 134, _startPosY + 35, 5, 25); g.fillOval(_startPosX + 122, _startPosY + 32,
-		 * 5, 25); }
-		 */
 		g.setColor(Color.yellow);
 		if (Cabin) {
 			g.fillRect(_startPosX + 87, _startPosY + 26, 25, 15);
