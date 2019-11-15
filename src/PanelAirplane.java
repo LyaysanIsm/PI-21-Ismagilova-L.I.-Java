@@ -7,11 +7,13 @@ import javax.swing.JPanel;
 public class PanelAirplane extends JPanel {
 	ITransport airplane;
 
-	/**
-	 * Create the panel.
-	 */
 	public PanelAirplane() {
 
+	}
+
+	public void setAirplane(ITransport p) {
+		airplane = p;
+		airplane.SetPosition(10, 10, 90, 50);
 	}
 
 	public void renovate(int width, int height, boolean itFighter) {
@@ -20,7 +22,7 @@ public class PanelAirplane extends JPanel {
 					Color.darkGray, true, true, true, true);
 		} else {
 			airplane = new Airplane((int) (Math.random() * 200) + 100, (int) (Math.random() * 1000) + 1000, Color.green,
-					true, true, (int) (Math.random() * 3));
+					true, true);
 		}
 		airplane.SetPosition((int) (Math.random() * 200) + 100, (int) (Math.random() * 100) + 50, width, height);
 	}

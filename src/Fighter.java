@@ -10,9 +10,9 @@ public class Fighter extends Airplane {
 	public boolean Keel;
 	public boolean Cabin;
 
-	public Fighter(int maxSpeed, int weight, Color mainColor, Color dopColor, boolean bombs, boolean bullets,
+	public Fighter(int maxSpeed, float weight, Color mainColor, Color dopColor, boolean bombs, boolean bullets,
 			boolean keel, boolean cabin) {
-		super(maxSpeed, weight, mainColor, keel, cabin, (int) (Math.random() * 3));
+		super(maxSpeed, weight, mainColor, keel, cabin);
 		DopColor = dopColor;
 		Keel = keel;
 		Bullets = bullets;
@@ -59,34 +59,30 @@ public class Fighter extends Airplane {
 	}
 
 	public void DrawAirplane(Graphics g) {
-
 		g.setColor(DopColor);
 		if (Bombs) {
-			g.drawLine(_startPosX + 95, _startPosY - 20, _startPosX + 95, _startPosY);
-			g.drawLine(_startPosX + 105, _startPosY - 20, _startPosX + 105, _startPosY);
+			g.drawLine(_startPosX + 94 / 3, _startPosY - 20 / 3, _startPosX + 94 / 3, _startPosY + 100 / 3);
+			g.drawLine(_startPosX + 104 / 3, _startPosY - 20 / 3, _startPosX + 104 / 3, _startPosY + 100 / 3);
 		}
 		super.DrawAirplane(g);
-
-		/*
-		 * g.setColor(DopColor); if (Bullets) { g.fillOval(_startPosX + 48, _startPosY +
-		 * 40, 5, 25); g.fillOval(_startPosX + 59, _startPosY + 35, 5, 25);
-		 * g.fillOval(_startPosX + 70, _startPosY + 32, 5, 25);
-		 * 
-		 * g.fillOval(_startPosX + 145, _startPosY + 40, 5, 25); g.fillOval(_startPosX +
-		 * 134, _startPosY + 35, 5, 25); g.fillOval(_startPosX + 122, _startPosY + 32,
-		 * 5, 25); }
-		 */
 		g.setColor(Color.yellow);
 		if (Cabin) {
-			g.fillRect(_startPosX + 87, _startPosY + 26, 25, 15);
+			g.fillRect(_startPosX + 87 / 3, _startPosY + 26 / 3, 25 / 3, 15 / 3);
 			g.setColor(Color.black);
-			g.drawRect(_startPosX + 87, _startPosY + 26, 25, 15);
+			g.drawRect(_startPosX + 87 / 3, _startPosY + 26 / 3, 25 / 3, 15 / 3);
 		}
 
 		g.setColor(Color.black);
 		if (Keel) {
-			g.fillOval(_startPosX + 98, _startPosY + 120, 5, 30);
-			g.drawOval(_startPosX + 98, _startPosY + 120, 5, 30);
+			g.fillOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
+			g.drawOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
 		}
+	}
+
+	@Override
+	public ITransport Clone() {
+		ITransport air = new Fighter(this.MaxSpeed, this.Weight, this.MainColor, this.DopColor, this.Bombs,
+				this.Bullets, this.Keel, this.Cabin);
+		return air;
 	}
 }

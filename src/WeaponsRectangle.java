@@ -43,7 +43,7 @@ public class WeaponsRectangle implements IWeapons {
 
 		for (int i = 0; i < amt; i++) {
 			g.setColor(color.blue);
-			g.fillRect(PosX + n * i, PosY, 8, 22);
+			g.fillRect(PosX - 20 + n * i, PosY + 5, 8 / 2, 22 / 2);
 		}
 	}
 }
