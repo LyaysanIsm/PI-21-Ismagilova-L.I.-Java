@@ -43,7 +43,7 @@ public class Weapons implements IWeapons {
 
 		for (int i = 0; i < amt; i++) {
 			g.setColor(color.red);
-			g.fillOval(PosX + n * i, PosY, 5, 25);
+			g.fillOval(PosX - 20 + n * i, PosY + 5, 5 / 2, 25 / 2);
 		}
 	}
 }

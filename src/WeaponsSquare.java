@@ -42,7 +42,7 @@ public class WeaponsSquare implements IWeapons {
 		}
 
 		for (int i = 0; i < amt; i++) {
-			g.fillRect(PosX + n * i, PosY, 5, 25);
+			g.fillRect(PosX - 20 + n * i, PosY + 5, 5 / 2, 25 / 2);
 		}
 	}
 }

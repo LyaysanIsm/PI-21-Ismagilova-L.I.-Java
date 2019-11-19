@@ -10,8 +10,8 @@ public class Fighter extends Airplane {
 	public boolean Keel;
 	public boolean Cabin;
 
-	public Fighter(int maxSpeed, int weight, Color mainColor, Color dopColor, boolean bombs, boolean bullets,
-			boolean keel, boolean cabin) {
+	public Fighter(int maxSpeed, float weight, Color mainColor, Color dopColor, boolean bombs, boolean bullets,
+			boolean keel, boolean cabin, int m) {
 		super(maxSpeed, weight, mainColor, keel, cabin, (int) (Math.random() * 3));
 		DopColor = dopColor;
 		Keel = keel;
@@ -30,26 +30,26 @@ public class Fighter extends Airplane {
 	public void MoveTransport(Direction direction) {
 		float step = MaxSpeed * 100 / Weight;
 		switch (direction) {
-		// ‚Ô‡‚Ó
+		// √¢√Ø√∞√†√¢√Æ
 		case Right:
 			if (_startPosX + step < _pictureWidth - planeWidth - 85) {
 				_startPosX += step;
 			}
 			break;
-		// ‚ÎÂ‚Ó
+		// √¢√´√•√¢√Æ
 		case Left:
 			if (_startPosX - step > 0) {
 				_startPosX -= step;
 			}
 			break;
-		// ‚‚Âı
+		// √¢√¢√•√∞√µ
 		case Up:
 			if (_startPosY - step > 3) {
 
 				_startPosY -= step;
 			}
 			break;
-		// ‚ÌËÁ
+		// √¢√≠√®√ß
 		case Down:
 			if (_startPosY + step < _pictureHeight - planeHeight - 100) {
 				_startPosY += step;
@@ -59,25 +59,31 @@ public class Fighter extends Airplane {
 	}
 
 	public void DrawAirplane(Graphics g) {
-
 		g.setColor(DopColor);
 		if (Bombs) {
-			g.drawLine(_startPosX + 95, _startPosY - 20, _startPosX + 95, _startPosY);
-			g.drawLine(_startPosX + 105, _startPosY - 20, _startPosX + 105, _startPosY);
+			g.drawLine(_startPosX + 94 / 3, _startPosY - 20 / 3, _startPosX + 94 / 3, _startPosY + 100 / 3);
+			g.drawLine(_startPosX + 104 / 3, _startPosY - 20 / 3, _startPosX + 104 / 3, _startPosY + 100 / 3);
 		}
 		super.DrawAirplane(g);
 
 		g.setColor(Color.yellow);
 		if (Cabin) {
-			g.fillRect(_startPosX + 87, _startPosY + 26, 25, 15);
+			g.fillRect(_startPosX + 87 / 3, _startPosY + 26 / 3, 25 / 3, 15 / 3);
 			g.setColor(Color.black);
-			g.drawRect(_startPosX + 87, _startPosY + 26, 25, 15);
+			g.drawRect(_startPosX + 87 / 3, _startPosY + 26 / 3, 25 / 3, 15 / 3);
 		}
 
 		g.setColor(Color.black);
 		if (Keel) {
-			g.fillOval(_startPosX + 98, _startPosY + 120, 5, 30);
-			g.drawOval(_startPosX + 98, _startPosY + 120, 5, 30);
+			g.fillOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
+			g.drawOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
 		}
+	}
+
+	@Override
+	public ITransport Clone() {
+		ITransport air = new Fighter(this.MaxSpeed, this.Weight, this.MainColor, this.DopColor, this.Bombs,
+				this.Bullets, this.Keel, this.Cabin, this.m);
+		return air;
 	}
 }
