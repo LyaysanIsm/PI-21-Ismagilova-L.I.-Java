@@ -57,7 +57,7 @@ public class FormParking {
 		btnAirplane.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Airplane airplane = new Airplane((int) (Math.random() * 200) + 100, (int) (Math.random() * 1000) + 1000,
-						Color.green, true, true);
+						Color.green, true, true, (int) (Math.random() * 3));
 				panel.Add(airplane);
 				panel.repaint();
 			}
@@ -69,7 +69,7 @@ public class FormParking {
 		btnFighter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Fighter fighter = new Fighter((int) (Math.random() * 200) + 100, (int) (Math.random() * 1000) + 1000,
-						Color.orange, Color.darkGray, true, true, true, true);
+						Color.orange, Color.darkGray, true, true, true, true, (int) (Math.random() * 3));
 				panel.Add(fighter);
 				panel.repaint();
 			}
@@ -100,7 +100,7 @@ public class FormParking {
 				int count = 4;
 				ITransport airplane;
 				airplane = new Airplane((int) (Math.random() * 200) + 100, (int) (Math.random() * 1000) + 1000,
-						Color.green, true, true);
+						Color.green, true, true, (int) (Math.random() * 3));
 				panel.AddSeveral(airplane, count);
 				panel.repaint();
 			}
@@ -114,7 +114,7 @@ public class FormParking {
 				int count = 4;
 				ITransport airplane;
 				airplane = new Fighter((int) (Math.random() * 200) + 100, (int) (Math.random() * 1000) + 1000,
-						Color.orange, Color.darkGray, true, true, true, true);
+						Color.orange, Color.darkGray, true, true, true, true, (int) (Math.random() * 3));
 				panel.AddSeveral(airplane, count);
 				panel.repaint();
 			}

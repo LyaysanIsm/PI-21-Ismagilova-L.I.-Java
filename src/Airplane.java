@@ -7,13 +7,25 @@ public class Airplane extends Vehicle {
 	public boolean Keel;
 	public boolean Cabin;
 	protected IWeapons weapons;
+	public int m;
 
-	public Airplane(int maxSpeed, float weight, Color mainColor, boolean keel, boolean cabin) {
+	public Airplane(int maxSpeed, float weight, Color mainColor, boolean keel, boolean cabin, int m) {
 		MaxSpeed = maxSpeed;
 		Weight = weight;
 		MainColor = mainColor;
 		Keel = keel;
 		Cabin = cabin;
+		this.m = m;
+
+		if (m == 0) {
+			weapons = new Weapons((int) (Math.random() * 6) + 4);
+		}
+		if (m == 1) {
+			weapons = new WeaponsSquare((int) (Math.random() * 6) + 4);
+		}
+		if (m == 2) {
+			weapons = new WeaponsRectangle((int) (Math.random() * 6) + 4);
+		}
 	}
 
 	public void MoveTransport(Direction direction) {
@@ -72,11 +84,13 @@ public class Airplane extends Vehicle {
 		if (Keel) {
 			g.fillOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
 			g.drawOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
+
+			weapons.DrawWeapons(g, Color.black, _startPosX + 48 / 3, _startPosY + 43 / 3);
 		}
 	}
 
 	public ITransport Clone() {
-		ITransport air = new Airplane(this.MaxSpeed, this.Weight, this.MainColor, this.Keel, this.Cabin);
+		ITransport air = new Airplane(this.MaxSpeed, this.Weight, this.MainColor, this.Keel, this.Cabin, m);
 		return air;
 	}
 }

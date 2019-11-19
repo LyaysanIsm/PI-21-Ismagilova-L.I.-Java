@@ -11,8 +11,8 @@ public class Fighter extends Airplane {
 	public boolean Cabin;
 
 	public Fighter(int maxSpeed, float weight, Color mainColor, Color dopColor, boolean bombs, boolean bullets,
-			boolean keel, boolean cabin) {
-		super(maxSpeed, weight, mainColor, keel, cabin);
+			boolean keel, boolean cabin, int m) {
+		super(maxSpeed, weight, mainColor, keel, cabin, (int) (Math.random() * 3));
 		DopColor = dopColor;
 		Keel = keel;
 		Bullets = bullets;
@@ -65,6 +65,7 @@ public class Fighter extends Airplane {
 			g.drawLine(_startPosX + 104 / 3, _startPosY - 20 / 3, _startPosX + 104 / 3, _startPosY + 100 / 3);
 		}
 		super.DrawAirplane(g);
+
 		g.setColor(Color.yellow);
 		if (Cabin) {
 			g.fillRect(_startPosX + 87 / 3, _startPosY + 26 / 3, 25 / 3, 15 / 3);
@@ -82,7 +83,7 @@ public class Fighter extends Airplane {
 	@Override
 	public ITransport Clone() {
 		ITransport air = new Fighter(this.MaxSpeed, this.Weight, this.MainColor, this.DopColor, this.Bombs,
-				this.Bullets, this.Keel, this.Cabin);
+				this.Bullets, this.Keel, this.Cabin, this.m);
 		return air;
 	}
 }
