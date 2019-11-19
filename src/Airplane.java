@@ -70,9 +70,7 @@ public class Airplane extends Vehicle {
 		g.fillOval(_startPosX + 80, _startPosY - 6, 40, 160);
 		g.setColor(Color.black);
 		g.drawOval(_startPosX + 80, _startPosY - 6, 40, 160);
-
-		weapons.DrawWeapons(g, DopColor, _startPosX + 50, _startPosY + 65);	
-
+		
 		g.setColor(Color.yellow);
 		if (Cabin) {
 			g.fillRect(_startPosX + 87, _startPosY + 26, 25, 15);
