@@ -1,65 +1,54 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Airplane {
-	private int _startPosX;
-	private int _startPosY;
-	private int _pictureWidth;
-	private int _pictureHeight;
-	final private int planeWidth = 90;
-	final private int planeHeight = 50;
-	public int MaxSpeed;
-	public float Weight;
-	public Color MainColor;
-	public Color DopColor;
+public class Airplane extends Vehicle {
+	protected final int planeWidth = 90;
+	protected final int planeHeight = 50;
 	public boolean Keel;
-	public boolean Bullets;
 	public boolean Cabin;
-	private Weapons weapons;
+	protected IWeapons weapons;
 
-	public Airplane(int maxSpeed, float weight, Color mainColor, Color dopColor, boolean keel, boolean bullets,
-			boolean cabin) {
+	public Airplane(int maxSpeed, float weight, Color mainColor, boolean keel, boolean cabin, int m) {
 		MaxSpeed = maxSpeed;
 		Weight = weight;
 		MainColor = mainColor;
-		DopColor = dopColor;
 		Keel = keel;
-		Bullets = bullets;
 		Cabin = cabin;
-		
-		weapons = new Weapons(4 + (int) (Math.random() * 6));
-	}
 
-	public void SetPosition(int x, int y, int width, int height) {
-		_startPosX = x;
-		_startPosY = y;
-		_pictureWidth = width;
-		_pictureHeight = height;
+		if (m == 0) {
+			weapons = new Weapons((int) (Math.random() * 6) + 4);
+		}
+		if (m == 1) {
+			weapons = new WeaponsSquare((int) (Math.random() * 6) + 4);
+		}
+		if (m == 2) {
+			weapons = new WeaponsRectangle((int) (Math.random() * 6) + 4);
+		}
 	}
 
 	public void MoveTransport(Direction direction) {
 		float step = MaxSpeed * 100 / Weight;
 		switch (direction) {
-		// ‚Ô‡‚Ó
+		// √¢√Ø√∞√†√¢√Æ
 		case Right:
 			if (_startPosX + step < _pictureWidth - planeWidth - 85) {
 				_startPosX += step;
 			}
 			break;
-		// ‚ÎÂ‚Ó
+		// √¢√´√•√¢√Æ
 		case Left:
 			if (_startPosX - step > 0) {
 				_startPosX -= step;
 			}
 			break;
-		// ‚‚Âı
+		// √¢√¢√•√∞√µ
 		case Up:
 			if (_startPosY - step > 3) {
 
 				_startPosY -= step;
 			}
 			break;
-		// ‚ÌËÁ
+		// √¢√≠√®√ß
 		case Down:
 			if (_startPosY + step < _pictureHeight - planeHeight - 100) {
 				_startPosY += step;
@@ -81,9 +70,7 @@ public class Airplane {
 		g.fillOval(_startPosX + 80, _startPosY - 6, 40, 160);
 		g.setColor(Color.black);
 		g.drawOval(_startPosX + 80, _startPosY - 6, 40, 160);
-
-		weapons.DrawWeapons(g, DopColor, _startPosX + 50, _startPosY + 65);	
-
+		
 		g.setColor(Color.yellow);
 		if (Cabin) {
 			g.fillRect(_startPosX + 87, _startPosY + 26, 25, 15);
@@ -95,6 +82,8 @@ public class Airplane {
 		if (Keel) {
 			g.fillOval(_startPosX + 98, _startPosY + 120, 5, 30);
 			g.drawOval(_startPosX + 98, _startPosY + 120, 5, 30);
+
+			weapons.DrawWeapons(g, Color.black, _startPosX + 48, _startPosY + 43);
 		}
 	}
 }

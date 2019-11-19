@@ -1,10 +1,10 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Weapons implements IWeapons {
+public class WeaponsSquare implements IWeapons {
 	private Amount amount;
 
-	public Weapons(int k) {
+	public WeaponsSquare(int k) {
 		if (k == 4) {
 			amount = Amount.four;
 		}
@@ -42,8 +42,7 @@ public class Weapons implements IWeapons {
 		}
 
 		for (int i = 0; i < amt; i++) {
-			g.setColor(color.red);
-			g.fillOval(PosX + n * i, PosY, 5, 25);
+			g.fillRect(PosX + n * i, PosY, 5, 25);
 		}
 	}
 }

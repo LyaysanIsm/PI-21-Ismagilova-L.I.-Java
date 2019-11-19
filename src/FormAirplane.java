@@ -6,14 +6,13 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class FormAirplane {
 
 	private JFrame frame;
 
 	Airplane airplane;
-	
-	
 
 	/**
 	 * Launch the application.
@@ -52,15 +51,27 @@ public class FormAirplane {
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
-		JButton button_Create = new JButton("\u0421\u043E\u0437\u0434\u0430\u0442\u044C");
-		button_Create.addActionListener(new ActionListener() {
+		JButton btnAirplane = new JButton("Airplane");
+		btnAirplane.setBackground(Color.ORANGE);
+		btnAirplane.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				((PanelAirplane) panel).renovate(panel.getSize().width, panel.getSize().height);
+				((PanelAirplane) panel).renovate(panel.getSize().width, panel.getSize().height, false);
 				panel.repaint();
 			}
 		});
-		button_Create.setBounds(0, 0, 89, 23);
-		panel.add(button_Create);
+		btnAirplane.setBounds(10, 43, 107, 23);
+		panel.add(btnAirplane);
+
+		JButton btnFighter = new JButton("Fighter");
+		btnFighter.setBackground(Color.BLUE);
+		btnFighter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				((PanelAirplane) panel).renovate(panel.getSize().width, panel.getSize().height, true);
+				panel.repaint();
+			}
+		});
+		btnFighter.setBounds(10, 16, 107, 23);
+		panel.add(btnFighter);
 
 		JButton btnNewButton_Up = new JButton("U");
 		btnNewButton_Up.addActionListener(new ActionListener() {
@@ -101,6 +112,5 @@ public class FormAirplane {
 		});
 		btnNewButton_Right.setBounds(636, 345, 45, 40);
 		panel.add(btnNewButton_Right);
-
 	}
 }
