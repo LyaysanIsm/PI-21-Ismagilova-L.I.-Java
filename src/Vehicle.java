@@ -18,7 +18,12 @@ public abstract class Vehicle implements ITransport {
 		_pictureHeight = height;
 	}
 
+	public void setColor(Color main) {
+		MainColor = main;
+	}
+
 	abstract public void DrawAirplane(Graphics g);
 
 	abstract public void MoveTransport(Direction direction);
+
 }
