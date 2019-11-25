@@ -1,23 +1,22 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.HashMap;
 
 public class Parking<T extends ITransport, K extends IWeapons> {
-	private T[] _places;
+	HashMap<Integer, T> _places;
 
 	private int PictureWidth;
 	private int PictureHeight;
 
 	private final int _placeSizeWidth = 210;
 	private final int _placeSizeHeight = 80;
+	int _maxCount;
 
 	public Parking(int sizes, int pictureWidth, int pictureHeight) {
-		_places = (T[]) new ITransport[sizes];
+		_places = new HashMap<Integer, T>(sizes);
+		_maxCount = sizes;
 		PictureWidth = pictureWidth;
 		PictureHeight = pictureHeight;
-
-		for (int i = 0; i < _places.length; i++) {
-			_places[i] = null;
-		}
 	}
 
 	public int getPictureWidth() {
@@ -37,10 +36,10 @@ public class Parking<T extends ITransport, K extends IWeapons> {
 	}
 
 	public int Add(T airplane) {
-		for (int i = 0; i < _places.length; i++) {
+		for (int i = 0; i < _maxCount; i++) {
 			if (CheckFreePlace(i)) {
-				_places[i] = airplane;
-				_places[i].SetPosition(5 + i / 5 * _placeSizeWidth + 5, i % 5 * _placeSizeHeight + 15, PictureWidth,
+				_places.put(i, airplane);
+				_places.get(i).SetPosition(5 + i / 5 * _placeSizeWidth + 5, i % 5 * _placeSizeHeight + 15, PictureWidth,
 						PictureHeight);
 				return i;
 			}
@@ -49,43 +48,31 @@ public class Parking<T extends ITransport, K extends IWeapons> {
 	}
 
 	public T Delete(int index) {
-		if (index < 0 || index > _places.length) {
-			return null;
-		}
 		if (!CheckFreePlace(index)) {
-			T airplane = _places[index];
-			_places[index] = null;
+			T airplane = _places.get(index);
+			_places.remove(index);
 			return airplane;
 		}
-
 		return null;
 	}
 
-	public int AddSeveral(T airplane, int count) {
-		for (int i = 0; i < count; i++) {
-			ITransport air = airplane.Clone();
-			Add((T) air);
-		}
-		return count;
-	}	
-
 	private boolean CheckFreePlace(int index) {
-		return _places[index] == null;
+		return !_places.containsKey(index);
 	}
 
 	public void Draw(Graphics g) {
 		DrawMarking(g);
-		for (int i = 0; i < _places.length; i++) {
+		for (int i = 0; i < _maxCount; i++) {
 			if (!CheckFreePlace(i)) {
-				_places[i].DrawAirplane(g);
+				_places.get(i).DrawAirplane(g);
 			}
 		}
 	}
 
 	private void DrawMarking(Graphics g) {
 		g.setColor(Color.black);
-		g.drawRect(0, 0, (_places.length / 5) * _placeSizeWidth, 480);
-		for (int i = 0; i < _places.length / 5; i++) {
+		g.drawRect(0, 0, (_maxCount / 5) * _placeSizeWidth, 480);
+		for (int i = 0; i < _maxCount / 5; i++) {
 			for (int j = 0; j < 6; j++) {
 				g.drawLine(i * _placeSizeWidth, j * _placeSizeHeight, i * _placeSizeWidth + 110, j * _placeSizeHeight);
 			}

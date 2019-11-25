@@ -2,26 +2,37 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 public class PanelParking extends JPanel {
-
 	public PanelParking() {
 	}
 
-	Parking<ITransport, IWeapons> parking = new Parking<ITransport, IWeapons>(15, 800, 600);
+	MultiLevelParking parking = new MultiLevelParking(15, 800, 600);
+
+	private final int countLevel = 5;
+
+	private int presentLevel = 0;
 
 	public void paint(Graphics g) {
 		super.paint(g);
-		parking.Draw(g);
+		parking.getParking(presentLevel).Draw(g);
 	}
 
-	public int Add(ITransport airplane) {
-		return parking.Add(airplane);
+	public void setLevel(int index) {
+		if (index >= 0 && index < countLevel) {
+			presentLevel = index;
+		}
+	}
+
+	public int Add(ITransport transport) {
+		return parking.getParking(presentLevel).Add(transport);
 	}
 
 	public ITransport Delete(int index) {
-		return parking.Delete(index);
+		ITransport transport = parking.getParking(presentLevel).Delete(index);
+
+		return transport;
 	}
 
-	public int AddSeveral(ITransport airplane, int count) {
-		return parking.AddSeveral(airplane, count);
-	}	
+	public ITransport getTransport(int i) {
+		return parking.getTransport(i, presentLevel);
+	}
 }

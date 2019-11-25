@@ -1,7 +1,5 @@
-
 import java.awt.Color;
 import java.awt.Graphics;
-
 import javax.swing.JPanel;
 
 public class PanelAirplane extends JPanel {
@@ -19,10 +17,10 @@ public class PanelAirplane extends JPanel {
 	public void renovate(int width, int height, boolean itFighter) {
 		if (itFighter) {
 			airplane = new Fighter((int) (Math.random() * 200) + 100, (int) (Math.random() * 1000) + 1000, Color.orange,
-					Color.darkGray, true, true, true, true);
+					Color.darkGray, true, true, true, true, (int) (Math.random() * 3));
 		} else {
 			airplane = new Airplane((int) (Math.random() * 200) + 100, (int) (Math.random() * 1000) + 1000, Color.green,
-					true, true);
+					true, true, (int) (Math.random() * 3));
 		}
 		airplane.SetPosition((int) (Math.random() * 200) + 100, (int) (Math.random() * 100) + 50, width, height);
 	}
