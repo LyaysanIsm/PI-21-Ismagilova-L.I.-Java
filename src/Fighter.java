@@ -30,26 +30,26 @@ public class Fighter extends Airplane {
 	public void MoveTransport(Direction direction) {
 		float step = MaxSpeed * 100 / Weight;
 		switch (direction) {
-		// вправо
+		// пїЅпїЅпїЅпїЅпїЅпїЅ
 		case Right:
 			if (_startPosX + step < _pictureWidth - planeWidth - 85) {
 				_startPosX += step;
 			}
 			break;
-		// влево
+		// пїЅпїЅпїЅпїЅпїЅ
 		case Left:
 			if (_startPosX - step > 0) {
 				_startPosX -= step;
 			}
 			break;
-		// вверх
+		// пїЅпїЅпїЅпїЅпїЅ
 		case Up:
 			if (_startPosY - step > 3) {
 
 				_startPosY -= step;
 			}
 			break;
-		// вниз
+		// пїЅпїЅпїЅпїЅ
 		case Down:
 			if (_startPosY + step < _pictureHeight - planeHeight - 100) {
 				_startPosY += step;
@@ -65,6 +65,7 @@ public class Fighter extends Airplane {
 			g.drawLine(_startPosX + 104 / 3, _startPosY - 20 / 3, _startPosX + 104 / 3, _startPosY + 100 / 3);
 		}
 		super.DrawAirplane(g);
+
 		g.setColor(Color.yellow);
 		if (Cabin) {
 			g.fillRect(_startPosX + 87 / 3, _startPosY + 26 / 3, 25 / 3, 15 / 3);

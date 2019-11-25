@@ -91,7 +91,7 @@ public class FormParking {
 					int index = Integer.parseInt(s);
 					airplane = panel.getTransport(index);
 					takeAirplane.setAirplane(airplane);
-					takeAirplane.repaint();
+					takeAirplane.repaint();		
 					panel.repaint();
 					arrlist.add(airplane);
 				}
