@@ -30,26 +30,26 @@ public class Fighter extends Airplane {
 	public void MoveTransport(Direction direction) {
 		float step = MaxSpeed * 100 / Weight;
 		switch (direction) {
-		// пїЅпїЅпїЅпїЅпїЅпїЅ
+		// вправо
 		case Right:
 			if (_startPosX + step < _pictureWidth - planeWidth - 85) {
 				_startPosX += step;
 			}
 			break;
-		// пїЅпїЅпїЅпїЅпїЅ
+		// влево
 		case Left:
 			if (_startPosX - step > 0) {
 				_startPosX -= step;
 			}
 			break;
-		// пїЅпїЅпїЅпїЅпїЅ
+		// вверх
 		case Up:
 			if (_startPosY - step > 3) {
 
 				_startPosY -= step;
 			}
 			break;
-		// пїЅпїЅпїЅпїЅ
+		// вниз
 		case Down:
 			if (_startPosY + step < _pictureHeight - planeHeight - 100) {
 				_startPosY += step;
