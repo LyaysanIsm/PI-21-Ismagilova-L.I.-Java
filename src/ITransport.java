@@ -6,6 +6,4 @@ public interface ITransport {
 	void MoveTransport(Direction direction);
 
 	void DrawAirplane(Graphics g);
-
-	ITransport Clone();
 }

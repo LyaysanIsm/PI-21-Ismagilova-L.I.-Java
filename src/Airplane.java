@@ -31,26 +31,26 @@ public class Airplane extends Vehicle {
 	public void MoveTransport(Direction direction) {
 		float step = MaxSpeed * 100 / Weight;
 		switch (direction) {
-		// âïðàâî
+		// ������
 		case Right:
 			if (_startPosX + step < _pictureWidth - planeWidth - 85) {
 				_startPosX += step;
 			}
 			break;
-		// âëåâî
+		// �����
 		case Left:
 			if (_startPosX - step > 0) {
 				_startPosX -= step;
 			}
 			break;
-		// ââåðõ
+		// �����
 		case Up:
 			if (_startPosY - step > 3) {
 
 				_startPosY -= step;
 			}
 			break;
-		// âíèç
+		// ����
 		case Down:
 			if (_startPosY + step < _pictureHeight - planeHeight - 100) {
 				_startPosY += step;
@@ -73,7 +73,7 @@ public class Airplane extends Vehicle {
 		g.setColor(Color.black);
 		g.drawOval(_startPosX + 80 / 3, _startPosY - 6 / 3, 40 / 3, 160 / 3);
 
-    g.setColor(Color.yellow);
+		g.setColor(Color.yellow);
 		if (Cabin) {
 			g.fillRect(_startPosX + 87 / 3, _startPosY + 26 / 3, 25 / 3, 15 / 3);
 			g.setColor(Color.black);
@@ -87,10 +87,5 @@ public class Airplane extends Vehicle {
 
 			weapons.DrawWeapons(g, Color.black, _startPosX + 48 / 3, _startPosY + 43 / 3);
 		}
-	}
-
-	public ITransport Clone() {
-		ITransport air = new Airplane(this.MaxSpeed, this.Weight, this.MainColor, this.Keel, this.Cabin, m);
-		return air;
 	}
 }

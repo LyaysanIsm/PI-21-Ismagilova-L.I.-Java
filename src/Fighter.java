@@ -30,26 +30,26 @@ public class Fighter extends Airplane {
 	public void MoveTransport(Direction direction) {
 		float step = MaxSpeed * 100 / Weight;
 		switch (direction) {
-		// âïðàâî
+		// ������
 		case Right:
 			if (_startPosX + step < _pictureWidth - planeWidth - 85) {
 				_startPosX += step;
 			}
 			break;
-		// âëåâî
+		// �����
 		case Left:
 			if (_startPosX - step > 0) {
 				_startPosX -= step;
 			}
 			break;
-		// ââåðõ
+		// �����
 		case Up:
 			if (_startPosY - step > 3) {
 
 				_startPosY -= step;
 			}
 			break;
-		// âíèç
+		// ����
 		case Down:
 			if (_startPosY + step < _pictureHeight - planeHeight - 100) {
 				_startPosY += step;
@@ -78,12 +78,5 @@ public class Fighter extends Airplane {
 			g.fillOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
 			g.drawOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
 		}
-	}
-
-	@Override
-	public ITransport Clone() {
-		ITransport air = new Fighter(this.MaxSpeed, this.Weight, this.MainColor, this.DopColor, this.Bombs,
-				this.Bullets, this.Keel, this.Cabin, this.m);
-		return air;
 	}
 }
