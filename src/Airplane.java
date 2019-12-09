@@ -15,42 +15,31 @@ public class Airplane extends Vehicle {
 		MainColor = mainColor;
 		Keel = keel;
 		Cabin = cabin;
-		this.m = m;
-
-		if (m == 0) {
-			weapons = new Weapons((int) (Math.random() * 6) + 4);
-		}
-		if (m == 1) {
-			weapons = new WeaponsSquare((int) (Math.random() * 6) + 4);
-		}
-		if (m == 2) {
-			weapons = new WeaponsRectangle((int) (Math.random() * 6) + 4);
-		}
 	}
 
 	public void MoveTransport(Direction direction) {
 		float step = MaxSpeed * 100 / Weight;
 		switch (direction) {
-		// пїЅпїЅпїЅпїЅпїЅпїЅ
+		// вправо
 		case Right:
 			if (_startPosX + step < _pictureWidth - planeWidth - 85) {
 				_startPosX += step;
 			}
 			break;
-		// пїЅпїЅпїЅпїЅпїЅ
+		// влево
 		case Left:
 			if (_startPosX - step > 0) {
 				_startPosX -= step;
 			}
 			break;
-		// пїЅпїЅпїЅпїЅпїЅ
+		// вверх
 		case Up:
 			if (_startPosY - step > 3) {
 
 				_startPosY -= step;
 			}
 			break;
-		// пїЅпїЅпїЅпїЅ
+		// вниз
 		case Down:
 			if (_startPosY + step < _pictureHeight - planeHeight - 100) {
 				_startPosY += step;
@@ -84,8 +73,6 @@ public class Airplane extends Vehicle {
 		if (Keel) {
 			g.fillOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
 			g.drawOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
-
-			weapons.DrawWeapons(g, Color.black, _startPosX + 48 / 3, _startPosY + 43 / 3);
 		}
 	}
 }

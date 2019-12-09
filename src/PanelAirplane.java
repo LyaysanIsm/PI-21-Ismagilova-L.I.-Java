@@ -42,6 +42,10 @@ public class PanelAirplane extends JPanel {
 		}
 	}
 
+	public ITransport getTransportplane() {
+		return airplane;
+	}
+
 	public void paint(Graphics g) {
 		super.paint(g);
 		if (airplane != null) {

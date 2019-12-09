@@ -18,6 +18,16 @@ public class Fighter extends Airplane {
 		Bullets = bullets;
 		Cabin = cabin;
 		Bombs = bombs;
+
+		weapons = new Weapons((int) (Math.random() * 3) + 4);
+	}
+
+	public void setWeapons(IWeapons weap) {
+		weapons = weap;
+	}
+
+	public void setDopColor(Color dop) {
+		DopColor = dop;
 	}
 
 	public void SetPosition(int x, int y, int width, int height) {
@@ -30,26 +40,26 @@ public class Fighter extends Airplane {
 	public void MoveTransport(Direction direction) {
 		float step = MaxSpeed * 100 / Weight;
 		switch (direction) {
-		// ������
+		// âïðàâî
 		case Right:
 			if (_startPosX + step < _pictureWidth - planeWidth - 85) {
 				_startPosX += step;
 			}
 			break;
-		// �����
+		// âëåâî
 		case Left:
 			if (_startPosX - step > 0) {
 				_startPosX -= step;
 			}
 			break;
-		// �����
+		// ââåðõ
 		case Up:
 			if (_startPosY - step > 3) {
 
 				_startPosY -= step;
 			}
 			break;
-		// ����
+		// âíèç
 		case Down:
 			if (_startPosY + step < _pictureHeight - planeHeight - 100) {
 				_startPosY += step;
@@ -65,7 +75,6 @@ public class Fighter extends Airplane {
 			g.drawLine(_startPosX + 104 / 3, _startPosY - 20 / 3, _startPosX + 104 / 3, _startPosY + 100 / 3);
 		}
 		super.DrawAirplane(g);
-
 		g.setColor(Color.yellow);
 		if (Cabin) {
 			g.fillRect(_startPosX + 87 / 3, _startPosY + 26 / 3, 25 / 3, 15 / 3);
@@ -78,5 +87,8 @@ public class Fighter extends Airplane {
 			g.fillOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
 			g.drawOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
 		}
+
+		weapons.DrawWeapons(g, Color.black, _startPosX + 48 / 3, _startPosY + 43 / 3);
 	}
+
 }

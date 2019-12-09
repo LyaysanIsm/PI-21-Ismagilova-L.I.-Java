@@ -12,12 +12,22 @@ import java.awt.List;
 
 public class FormParking {
 
+	PanelParking panel;
+
 	private JFrame frame;
 	private JPanel takeAirplane;
 	private JTextField postextField;
 	private ITransport airplane;
 
 	ArrayList<ITransport> arrlist = new ArrayList<ITransport>();
+
+	class Delegate extends AirplaneDelegate {
+		@Override
+		public void induce(ITransport airplane) {
+			panel.Add(airplane);
+			panel.repaint();
+		}
+	}
 
 	/**
 	 * Launch the application.
@@ -51,33 +61,9 @@ public class FormParking {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		PanelParking panel = new PanelParking();
+		panel = new PanelParking();
 		panel.setBounds(15, 16, 636, 484);
 		frame.getContentPane().add(panel);
-
-		JButton btnAirplane = new JButton("Airplane");
-		btnAirplane.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Airplane airplane = new Airplane((int) (Math.random() * 200) + 100, (int) (Math.random() * 1000) + 1000,
-						Color.green, true, true, (int) (Math.random() * 3));
-				panel.Add(airplane);
-				panel.repaint();
-			}
-		});
-		btnAirplane.setBounds(695, 28, 148, 29);
-		frame.getContentPane().add(btnAirplane);
-
-		JButton btnFighter = new JButton("Fighter");
-		btnFighter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Fighter fighter = new Fighter((int) (Math.random() * 200) + 100, (int) (Math.random() * 1000) + 1000,
-						Color.orange, Color.darkGray, true, true, true, true, (int) (Math.random() * 3));
-				panel.Add(fighter);
-				panel.repaint();
-			}
-		});
-		btnFighter.setBounds(695, 67, 148, 29);
-		frame.getContentPane().add(btnFighter);
 
 		PanelAirplane takeAirplane = new PanelAirplane();
 		takeAirplane.setBounds(695, 177, 236, 118);
@@ -91,7 +77,7 @@ public class FormParking {
 					int index = Integer.parseInt(s);
 					airplane = panel.getTransport(index);
 					takeAirplane.setAirplane(airplane);
-					takeAirplane.repaint();		
+					takeAirplane.repaint();
 					panel.repaint();
 					arrlist.add(airplane);
 				}
@@ -107,6 +93,15 @@ public class FormParking {
 		postextField.setBounds(757, 107, 24, 20);
 		frame.getContentPane().add(postextField);
 		postextField.setColumns(10);
+
+		JButton btnAddAirplane = new JButton("Airplane");
+		btnAddAirplane.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FormAirplaneConfig config = new FormAirplaneConfig(new Delegate());
+			}
+		});
+		btnAddAirplane.setBounds(695, 49, 148, 29);
+		frame.getContentPane().add(btnAddAirplane);
 
 		List list = new List();
 		for (int i = 0; i < 5; i++) {
