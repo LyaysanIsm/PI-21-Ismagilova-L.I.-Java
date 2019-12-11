@@ -22,6 +22,29 @@ public class Fighter extends Airplane {
 		weapons = new Weapons((int) (Math.random() * 3) + 4);
 	}
 
+	public Fighter(String info) {
+		super(info);
+
+		String[] strs = info.split(";");
+		if (strs.length == 7) {
+			MaxSpeed = Integer.parseInt(strs[0]);
+			Weight = Float.parseFloat(strs[1]);
+			MainColor = new Color(Integer.parseInt(strs[2]));
+			Keel = Boolean.parseBoolean(strs[3]);
+			Cabin = Boolean.parseBoolean(strs[4]);
+			DopColor = new Color(Integer.parseInt(strs[5]));
+			Bombs = Boolean.parseBoolean(strs[6]);
+		}
+
+		weapons = new Weapons((int) (Math.random() * 3) + 4);
+	}
+
+	@Override
+	public String ToString() {
+		return super.ToString() + ";" + DopColor.getRGB() + ";" + Bombs;
+
+	}
+
 	public void setWeapons(IWeapons weap) {
 		weapons = weap;
 	}

@@ -19,6 +19,12 @@ public class Parking<T extends ITransport, K extends IWeapons> {
 		PictureHeight = pictureHeight;
 	}
 
+	public void setPlane(int index, T airplane) {
+		_places.put(index, airplane);
+		_places.get(index).SetPosition(5 + index / 5 * _placeSizeWidth + 5, index % 5 * _placeSizeHeight + 15,
+				PictureWidth, PictureHeight);
+	}
+
 	public int getPictureWidth() {
 		return PictureWidth;
 	}
@@ -67,6 +73,13 @@ public class Parking<T extends ITransport, K extends IWeapons> {
 				_places.get(i).DrawAirplane(g);
 			}
 		}
+	}
+
+	public ITransport getTransport(int index) {
+		if (!CheckFreePlace(index)) {
+			return _places.get(index);
+		}
+		return null;
 	}
 
 	private void DrawMarking(Graphics g) {

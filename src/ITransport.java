@@ -9,4 +9,6 @@ public interface ITransport {
 	void DrawAirplane(Graphics g);
 
 	void setColor(Color main);
+
+	String ToString();
 }
