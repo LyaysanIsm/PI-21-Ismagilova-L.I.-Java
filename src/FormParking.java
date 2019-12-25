@@ -3,11 +3,17 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.List;
 
 public class FormParking {
@@ -62,7 +68,7 @@ public class FormParking {
 		frame.getContentPane().setLayout(null);
 
 		panel = new PanelParking();
-		panel.setBounds(15, 16, 636, 484);
+		panel.setBounds(12, 81, 639, 437);
 		frame.getContentPane().add(panel);
 
 		PanelAirplane takeAirplane = new PanelAirplane();
@@ -115,5 +121,78 @@ public class FormParking {
 			}
 		});
 		frame.getContentPane().add(list);
+
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBounds(30, 12, 139, 31);
+		frame.getContentPane().add(menuBar);
+
+		JMenu mnFile = new JMenu("Файл");
+		menuBar.add(mnFile);
+
+		JMenuItem mntmSave = new JMenuItem("Сохранить");
+		mntmSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser filechooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("txt", "txt");
+				filechooser.setFileFilter(filter);
+				int loc = filechooser.showDialog(null, "Сохранить");
+				if (loc == JFileChooser.APPROVE_OPTION) {
+					File file = filechooser.getSelectedFile();
+					panel.SaveInfo(file.getAbsolutePath() + ".txt");
+				}
+			}
+		});
+		mnFile.add(mntmSave);
+
+		JMenuItem mntmLoad = new JMenuItem("Загрузить");
+		mntmLoad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser filechooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("txt", "txt");
+				filechooser.setFileFilter(filter);
+				int loc = filechooser.showDialog(null, "Загрузить");
+				if (loc == JFileChooser.APPROVE_OPTION) {
+					File file = filechooser.getSelectedFile();
+					panel.LoadInfo(file.getAbsolutePath());
+					panel.repaint();
+				}
+			}
+		});
+		mnFile.add(mntmLoad);
+
+		JMenu mnLevel = new JMenu("Уровень");
+		menuBar.add(mnLevel);
+
+		JMenuItem mntmLevelSave = new JMenuItem("Сохранить");
+		mntmLevelSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser filechooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("lvl", "lvl");
+				filechooser.setFileFilter(filter);
+				int loc = filechooser.showDialog(null, "Сохранить");
+				if (loc == JFileChooser.APPROVE_OPTION) {
+					File file = filechooser.getSelectedFile();
+					panel.SavePresentLevel(file.getAbsolutePath() + ".lvl");
+					panel.repaint();
+				}
+			}
+		});
+		mnLevel.add(mntmLevelSave);
+
+		JMenuItem mntmLevelLoad = new JMenuItem("Загрузить");
+		mntmLevelLoad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser filechooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("lvl", "lvl");
+				filechooser.setFileFilter(filter);
+				int loc = filechooser.showDialog(null, "Загрузить");
+				if (loc == JFileChooser.APPROVE_OPTION) {
+					File file = filechooser.getSelectedFile();
+					panel.LoadPresentLevel(file.getAbsolutePath());
+					panel.repaint();
+				}
+			}
+		});
+		mnLevel.add(mntmLevelLoad);
 	}
 }

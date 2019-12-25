@@ -17,6 +17,22 @@ public class Airplane extends Vehicle {
 		Cabin = cabin;
 	}
 
+	public Airplane(String info) {
+		String[] strs = info.split(";");
+		if (strs.length == 5) {
+			MaxSpeed = Integer.parseInt(strs[0]);
+			Weight = Float.parseFloat(strs[1]);
+			MainColor = new Color(Integer.parseInt(strs[2]));
+			Keel = Boolean.parseBoolean(strs[3]);
+			Cabin = Boolean.parseBoolean(strs[4]);
+		}
+	}
+
+	@Override
+	public String ToString() {
+		return MaxSpeed + ";" + Weight + ";" + MainColor.getRGB() + ";" + Keel + ";" + Cabin;
+	}
+
 	public void MoveTransport(Direction direction) {
 		float step = MaxSpeed * 100 / Weight;
 		switch (direction) {
