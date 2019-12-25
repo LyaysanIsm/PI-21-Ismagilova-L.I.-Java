@@ -18,13 +18,11 @@ public class Fighter extends Airplane {
 		Bullets = bullets;
 		Cabin = cabin;
 		Bombs = bombs;
-
 		weapons = new Weapons((int) (Math.random() * 3) + 4);
 	}
 
 	public Fighter(String info) {
 		super(info);
-
 		String[] strs = info.split(";");
 		if (strs.length == 7) {
 			MaxSpeed = Integer.parseInt(strs[0]);
@@ -35,14 +33,12 @@ public class Fighter extends Airplane {
 			DopColor = new Color(Integer.parseInt(strs[5]));
 			Bombs = Boolean.parseBoolean(strs[6]);
 		}
-
 		weapons = new Weapons((int) (Math.random() * 3) + 4);
 	}
 
 	@Override
 	public String ToString() {
 		return super.ToString() + ";" + DopColor.getRGB() + ";" + Bombs;
-
 	}
 
 	public void setWeapons(IWeapons weap) {
@@ -104,14 +100,11 @@ public class Fighter extends Airplane {
 			g.setColor(Color.black);
 			g.drawRect(_startPosX + 87 / 3, _startPosY + 26 / 3, 25 / 3, 15 / 3);
 		}
-
 		g.setColor(Color.black);
 		if (Keel) {
 			g.fillOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
 			g.drawOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
 		}
-
 		weapons.DrawWeapons(g, Color.black, _startPosX + 48 / 3, _startPosY + 43 / 3);
 	}
-
 }

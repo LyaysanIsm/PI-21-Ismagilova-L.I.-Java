@@ -41,7 +41,17 @@ public class Parking<T extends ITransport, K extends IWeapons> {
 		this.PictureHeight = PictureHeight;
 	}
 
-	public int Add(T airplane) {
+	public int AddTo(T airplane, int index) throws ParkingOccupiedPlaceException {
+		if (CheckFreePlace(index)) {
+			_places.put(index, airplane);
+			_places.get(index).SetPosition(5 + index / 5 * _placeSizeWidth + 5, index % 5 * _placeSizeHeight + 15,
+					PictureWidth, PictureHeight);
+			return index;
+		}
+		throw new ParkingOccupiedPlaceException(index);
+	}
+
+	public int Add(T airplane) throws ParkingOverflowException {
 		for (int i = 0; i < _maxCount; i++) {
 			if (CheckFreePlace(i)) {
 				_places.put(i, airplane);
@@ -50,16 +60,16 @@ public class Parking<T extends ITransport, K extends IWeapons> {
 				return i;
 			}
 		}
-		return -1;
+		throw new ParkingOverflowException();
 	}
 
-	public T Delete(int index) {
+	public T Delete(int index) throws ParkingNotFoundException {
 		if (!CheckFreePlace(index)) {
 			T airplane = _places.get(index);
 			_places.remove(index);
 			return airplane;
 		}
-		return null;
+		throw new ParkingNotFoundException(index);
 	}
 
 	private boolean CheckFreePlace(int index) {

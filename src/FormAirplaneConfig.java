@@ -4,12 +4,18 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JInternalFrame;
 import java.awt.Label;
 import java.awt.Panel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -17,11 +23,11 @@ import javax.swing.SwingConstants;
 
 public class FormAirplaneConfig {
 
-	private JFrame frame;
-
+	JFrame frame;
 	private ITransport plane = null;
 	private IWeapons weapons = null;
 	private Color color = null;
+	private Logger logger_error;
 
 	AirplaneDelegate AddAirplane;
 
@@ -44,11 +50,25 @@ public class FormAirplaneConfig {
 	}
 
 	private void initialize() {
+
+		logger_error = Logger.getLogger(FormParking.class.getName() + "2");
+		try {
+			FileHandler fh_error = null;
+			fh_error = new FileHandler("D:\\file_error.txt");
+			logger_error.addHandler(fh_error);
+			logger_error.setUseParentHandlers(false);
+			SimpleFormatter formatter = new SimpleFormatter();
+			fh_error.setFormatter(formatter);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		frame = new JFrame();
 		frame.setBounds(100, 100, 645, 352);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
 		frame.setVisible(true);
 
 		PanelAirplane panel = new PanelAirplane();
@@ -115,8 +135,14 @@ public class FormAirplaneConfig {
 		JButton btnOk = new JButton("Ok");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				AddAirplane.induce(panel.getTransportplane());
-				frame.dispose();
+				try {
+					AddAirplane.induce(panel.getTransportplane());
+					frame.dispose();
+				} catch (ParkingOverflowException ex) {
+					logger_error.warning("Парковка переполнена");
+					JOptionPane.showMessageDialog(frame, "Парковка переполнена", "Exception",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		btnOk.setBounds(15, 206, 115, 29);

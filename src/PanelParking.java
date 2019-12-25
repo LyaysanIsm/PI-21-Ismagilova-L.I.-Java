@@ -1,6 +1,5 @@
 import java.awt.Graphics;
 import java.io.IOException;
-
 import javax.swing.JPanel;
 
 public class PanelParking extends JPanel {
@@ -10,7 +9,6 @@ public class PanelParking extends JPanel {
 	MultiLevelParking parking = new MultiLevelParking(15, 800, 600);
 
 	private final int countLevel = 5;
-
 	private int presentLevel = 0;
 
 	public void paint(Graphics g) {
@@ -30,40 +28,26 @@ public class PanelParking extends JPanel {
 
 	public ITransport Delete(int index) {
 		ITransport transport = parking.getParking(presentLevel).Delete(index);
-
 		return transport;
 	}
 
-	public ITransport getTransport(int i) {
+	public ITransport getTransport(int i) throws ParkingOccupiedPlaceException {
 		return parking.getTransport(i, presentLevel);
 	}
 
-	public void SaveInfo(String filename) {
-		try {
-			parking.Save(filename);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void SaveInfo(String filename) throws IOException {
+		parking.Save(filename);
 	}
 
-	public void LoadInfo(String filename) {
-		try {
-			parking.Load(filename);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void LoadInfo(String filename) throws ParkingOccupiedPlaceException, IOException {
+		parking.Load(filename);
 	}
 
 	public void SavePresentLevel(String filename) {
 		parking.SaveLevel(filename, presentLevel);
-
 	}
 
-	public void LoadPresentLevel(String filename) {
-		try {
-			parking.LoadLevel(filename);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void LoadPresentLevel(String filename) throws IOException, ParkingOccupiedPlaceException {
+		parking.LoadLevel(filename);
 	}
 }
