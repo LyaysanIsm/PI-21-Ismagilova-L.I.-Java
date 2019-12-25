@@ -22,7 +22,6 @@ public class MultiLevelParking {
 	}
 
 	public Parking<ITransport, IWeapons> getParking(int index) {
-
 		if (index > -1 && index < parkingStages.size()) {
 			return parkingStages.get(index);
 		}
@@ -55,9 +54,7 @@ public class MultiLevelParking {
 				}
 			}
 		}
-
 		fw.flush();
-
 		return true;
 	}
 
@@ -74,12 +71,9 @@ public class MultiLevelParking {
 		String bufferTextFromFile = "";
 		int counter = -1;
 		int c;
-
 		while ((char) (c = fr.read()) != '\n') {
-
 			bufferTextFromFile += (char) c;
 		}
-
 		if (bufferTextFromFile.contains("CountLeveles")) {
 			int count = Integer.parseInt(bufferTextFromFile.split(":")[1]);
 			if (parkingStages != null) {
@@ -90,34 +84,28 @@ public class MultiLevelParking {
 		} else {
 			return false;
 		}
-
 		while ((c = fr.read()) != -1) {
 			if ((char) c == '\n') {
 				ITransport airplane = null;
-
 				if (bufferTextFromFile.equals("Level")) {
 					counter++;
 					parkingStages.add(new Parking<ITransport, IWeapons>(countPlaces, pictureWidth, pictureHeight));
 					bufferTextFromFile = "";
 					continue;
 				}
-
 				if (bufferTextFromFile.split(":").length > 1) {
 					if (bufferTextFromFile.split(":")[1].equals("Airplane")) {
 						airplane = new Airplane(bufferTextFromFile.split(":")[2]);
 					} else if (bufferTextFromFile.split(":")[1].equals("Fighter")) {
 						airplane = new Fighter(bufferTextFromFile.split(":")[2]);
 					}
-
 					parkingStages.get(counter).setPlane(Integer.parseInt(bufferTextFromFile.split(":")[0]), airplane);
 				}
-
 				bufferTextFromFile = "";
 			} else {
 				bufferTextFromFile += (char) c;
 			}
 		}
-
 		return true;
 	}
 
@@ -129,7 +117,6 @@ public class MultiLevelParking {
 			FileWriter fw = new FileWriter(filename);
 			WriteToFile("Level:" + lvl + "\n", fw);
 			Parking<ITransport, IWeapons> level = parkingStages.get(lvl);
-
 			for (int i = 0; i < countPlaces; i++) {
 				ITransport airplane = level.getTransport(i);
 				if (airplane != null) {
@@ -143,7 +130,6 @@ public class MultiLevelParking {
 				}
 			}
 			fw.flush();
-
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -164,7 +150,6 @@ public class MultiLevelParking {
 		} else {
 			return false;
 		}
-
 		if (parkingStages.size() < lvl) {
 			return false;
 		}
@@ -172,21 +157,17 @@ public class MultiLevelParking {
 		while ((c = fr.read()) != -1) {
 			if ((char) c == '\n') {
 				ITransport airplane = null;
-
 				if (bufferTextFromFile == null) {
 					continue;
 				}
-
 				if (bufferTextFromFile.split(":").length > 2) {
 					if (bufferTextFromFile.split(":")[1].equals("Airplane")) {
 						airplane = new Airplane(bufferTextFromFile.split(":")[2]);
 					} else if (bufferTextFromFile.split(":")[1].equals("Fighter")) {
 						airplane = new Fighter(bufferTextFromFile.split(":")[2]);
 					}
-
 					parkingStages.get(lvl).setPlane(Integer.parseInt(bufferTextFromFile.split(":")[0]), airplane);
 				}
-
 				bufferTextFromFile = "";
 			} else {
 				bufferTextFromFile += (char) c;

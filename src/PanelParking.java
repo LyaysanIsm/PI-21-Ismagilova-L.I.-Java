@@ -30,7 +30,6 @@ public class PanelParking extends JPanel {
 
 	public ITransport Delete(int index) {
 		ITransport transport = parking.getParking(presentLevel).Delete(index);
-
 		return transport;
 	}
 
@@ -56,7 +55,6 @@ public class PanelParking extends JPanel {
 
 	public void SavePresentLevel(String filename) {
 		parking.SaveLevel(filename, presentLevel);
-
 	}
 
 	public void LoadPresentLevel(String filename) {
