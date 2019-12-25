@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -50,7 +49,6 @@ public class FormAirplaneConfig {
 	}
 
 	private void initialize() {
-
 		logger_error = Logger.getLogger(FormParking.class.getName() + "2");
 		try {
 			FileHandler fh_error = null;
