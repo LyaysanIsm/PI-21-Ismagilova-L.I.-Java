@@ -43,7 +43,7 @@ public class PanelParking extends JPanel {
 		parking.Load(filename);
 	}
 
-	public void SavePresentLevel(String filename) {
+	public void SavePresentLevel(String filename) throws IOException {
 		parking.SaveLevel(filename, presentLevel);
 	}
 

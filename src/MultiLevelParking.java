@@ -29,12 +29,8 @@ public class MultiLevelParking {
 
 	public ITransport getTransport(int index, int lvl) throws ParkingNotFoundException {
 		if (lvl > -1 && lvl < parkingStages.size()) {
-			try {
-				ITransport plane = parkingStages.get(lvl).Delete(index);
-				return plane;
-			} catch (ParkingNotFoundException ex) {
-				throw new ParkingNotFoundException(index);
-			}
+			ITransport plane = parkingStages.get(lvl).Delete(index);
+			return plane;
 		}
 		return null;
 	}
@@ -72,51 +68,43 @@ public class MultiLevelParking {
 	public boolean Load(String filename) throws ParkingOccupiedPlaceException, IOException {
 		FileReader fr = new FileReader(filename);
 		int counter = -1;
-		try {
-			String bufferTextFromFile = "";
-			int c;
-			while ((char) (c = fr.read()) != '\n') {
-				bufferTextFromFile += (char) c;
-			}
-			if (bufferTextFromFile.contains("CountLeveles")) {
-				int count = Integer.parseInt(bufferTextFromFile.split(":")[1]);
+		String bufferTextFromFile = "";
+		int c;
+		while ((char) (c = fr.read()) != '\n') {
+			bufferTextFromFile += (char) c;
+		}
+		if (bufferTextFromFile.contains("CountLeveles")) {
+			int count = Integer.parseInt(bufferTextFromFile.split(":")[1]);
+			bufferTextFromFile = "";
+		} else {
+			return false;
+		}
+		while ((c = fr.read()) != -1) {
+			if ((char) c == '\n') {
+				ITransport airplane = null;
+				if (bufferTextFromFile.equals("Level")) {
+					counter++;
+					parkingStages.add(new Parking<ITransport, IWeapons>(countPlaces, pictureWidth, pictureHeight));
+					bufferTextFromFile = "";
+					continue;
+				}
+				if (bufferTextFromFile.split(":").length > 1) {
+					if (bufferTextFromFile.split(":")[1].equals("Airplane")) {
+						airplane = new Airplane(bufferTextFromFile.split(":")[2]);
+					} else if (bufferTextFromFile.split(":")[1].equals("Fighter")) {
+						airplane = new Fighter(bufferTextFromFile.split(":")[2]);
+					}
+					parkingStages.get(counter).AddTo(airplane, Integer.parseInt(bufferTextFromFile.split(":")[0]));
+				}
 				bufferTextFromFile = "";
 			} else {
-				return false;
+				bufferTextFromFile += (char) c;
 			}
-			while ((c = fr.read()) != -1) {
-				if ((char) c == '\n') {
-					ITransport airplane = null;
-					if (bufferTextFromFile.equals("Level")) {
-						counter++;
-						parkingStages.add(new Parking<ITransport, IWeapons>(countPlaces, pictureWidth, pictureHeight));
-						bufferTextFromFile = "";
-						continue;
-					}
-					if (bufferTextFromFile.split(":").length > 1) {
-						if (bufferTextFromFile.split(":")[1].equals("Airplane")) {
-							airplane = new Airplane(bufferTextFromFile.split(":")[2]);
-						} else if (bufferTextFromFile.split(":")[1].equals("Fighter")) {
-							airplane = new Fighter(bufferTextFromFile.split(":")[2]);
-						}
-						parkingStages.get(counter).AddTo(airplane, Integer.parseInt(bufferTextFromFile.split(":")[0]));
-					}
-					bufferTextFromFile = "";
-				} else {
-					bufferTextFromFile += (char) c;
-				}
-			}
-		} catch (ParkingOccupiedPlaceException | IOException ex) {
-			if (ex instanceof ParkingOccupiedPlaceException) {
-				throw new ParkingOccupiedPlaceException(counter);
-			} else
-				throw new IOException();
 		}
 		return true;
 	}
 
-	public boolean SaveLevel(String filename, int lvl) {
-		try {
+	public boolean SaveLevel(String filename, int lvl) throws IOException {		
 			if ((lvl > parkingStages.size()) || (lvl < 0)) {
 				return false;
 			}
@@ -135,54 +123,45 @@ public class MultiLevelParking {
 					WriteToFile(airplane.ToString() + "\n", fw);
 				}
 			}
-			fw.flush();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+			fw.flush();		
 		return true;
 	}
 
 	public boolean LoadLevel(String filename) throws IOException, ParkingOccupiedPlaceException {
 		FileReader fr = new FileReader(filename);
-		try {
-			String bufferTextFromFile = "";
-			int lvl = 0;
-			int c;
-			while ((char) (c = fr.read()) != '\n') {
-				bufferTextFromFile += (char) c;
-			}
-			if (bufferTextFromFile.contains("Level")) {
-				lvl = Integer.parseInt(bufferTextFromFile.split(":")[1]);
+		String bufferTextFromFile = "";
+		int lvl = 0;
+		int c;
+		while ((char) (c = fr.read()) != '\n') {
+			bufferTextFromFile += (char) c;
+		}
+		if (bufferTextFromFile.contains("Level")) {
+			lvl = Integer.parseInt(bufferTextFromFile.split(":")[1]);
+			bufferTextFromFile = "";
+		} else {
+			return false;
+		}
+		if (parkingStages.size() < lvl) {
+			return false;
+		}
+		while ((c = fr.read()) != -1) {
+			if ((char) c == '\n') {
+				ITransport airplane = null;
+				if (bufferTextFromFile == null) {
+					continue;
+				}
+				if (bufferTextFromFile.split(":").length > 2) {
+					if (bufferTextFromFile.split(":")[1].equals("Airplane")) {
+						airplane = new Airplane(bufferTextFromFile.split(":")[2]);
+					} else if (bufferTextFromFile.split(":")[1].equals("Fighter")) {
+						airplane = new Fighter(bufferTextFromFile.split(":")[2]);
+					}
+					parkingStages.get(lvl).AddTo(airplane, Integer.parseInt(bufferTextFromFile.split(":")[0]));
+				}
 				bufferTextFromFile = "";
 			} else {
-				return false;
+				bufferTextFromFile += (char) c;
 			}
-			if (parkingStages.size() < lvl) {
-				return false;
-			}
-			while ((c = fr.read()) != -1) {
-				if ((char) c == '\n') {
-					ITransport airplane = null;
-					if (bufferTextFromFile == null) {
-						continue;
-					}
-					if (bufferTextFromFile.split(":").length > 2) {
-						if (bufferTextFromFile.split(":")[1].equals("Airplane")) {
-							airplane = new Airplane(bufferTextFromFile.split(":")[2]);
-						} else if (bufferTextFromFile.split(":")[1].equals("Fighter")) {
-							airplane = new Fighter(bufferTextFromFile.split(":")[2]);
-						}
-						parkingStages.get(lvl).AddTo(airplane, Integer.parseInt(bufferTextFromFile.split(":")[0]));
-					}
-					bufferTextFromFile = "";
-				} else {
-					bufferTextFromFile += (char) c;
-				}
-			}
-		} catch (ParkingOccupiedPlaceException ex) {
-			throw ex;
-		} catch (IOException ex) {
-			throw ex;
 		}
 		return true;
 	}
