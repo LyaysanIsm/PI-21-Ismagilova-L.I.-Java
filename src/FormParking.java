@@ -6,12 +6,17 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.List;
@@ -19,11 +24,12 @@ import java.awt.List;
 public class FormParking {
 
 	PanelParking panel;
-
 	private JFrame frame;
 	private JPanel takeAirplane;
 	private JTextField postextField;
 	private ITransport airplane;
+	private Logger logger;
+	private Logger logger_error;
 
 	ArrayList<ITransport> arrlist = new ArrayList<ITransport>();
 
@@ -62,7 +68,28 @@ public class FormParking {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		logger = Logger.getLogger(FormParking.class.getName() + "1");
+		logger_error = Logger.getLogger(FormParking.class.getName() + "2");
+		try {
+			FileHandler fh = null;
+			FileHandler fh_error = null;
+			fh = new FileHandler("D:\\file_info.txt");
+			fh_error = new FileHandler("D:\\file_error.txt");
+			logger.addHandler(fh);
+			logger_error.addHandler(fh_error);
+			logger.setUseParentHandlers(false);
+			logger_error.setUseParentHandlers(false);
+			SimpleFormatter formatter = new SimpleFormatter();
+			fh.setFormatter(formatter);
+			fh_error.setFormatter(formatter);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		frame = new JFrame();
+		frame.setTitle("Ангар");
 		frame.setBounds(100, 100, 1000, 580);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -78,14 +105,23 @@ public class FormParking {
 		JButton btnTakeAirplane = new JButton("Take Airplane");
 		btnTakeAirplane.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String s = postextField.getText();
-				if (s != "") {
-					int index = Integer.parseInt(s);
-					airplane = panel.getTransport(index);
-					takeAirplane.setAirplane(airplane);
-					takeAirplane.repaint();
-					panel.repaint();
-					arrlist.add(airplane);
+				try {
+					String s = postextField.getText();
+					if (s != "") {
+						int index = Integer.parseInt(s);
+						airplane = panel.getTransport(index);
+						takeAirplane.setAirplane(airplane);
+						takeAirplane.repaint();
+						panel.repaint();
+						arrlist.add(airplane);
+						logger.info("Удален самолет по месту " + index);
+					}
+				} catch (ParkingNotFoundException ex) {
+					logger_error.warning("Не найдено");
+					JOptionPane.showMessageDialog(null, "Не найдено", "Exception", 0, null);
+				} catch (Exception ex) {
+					logger_error.warning("Неизвестная ошибка");
+					JOptionPane.showMessageDialog(frame, "Неизвестная ошибка", "Exception", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -104,6 +140,13 @@ public class FormParking {
 		btnAddAirplane.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				FormAirplaneConfig config = new FormAirplaneConfig(new Delegate());
+				try {
+					config.frame.setVisible(true);
+					config.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				} catch (ParkingOverflowException ex) {
+					logger.warning("Парковка переполнена");
+					JOptionPane.showMessageDialog(null, "Парковка переполнена");
+				}
 			}
 		});
 		btnAddAirplane.setBounds(695, 49, 148, 29);
@@ -132,13 +175,20 @@ public class FormParking {
 		JMenuItem mntmSave = new JMenuItem("Сохранить");
 		mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser filechooser = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("txt", "txt");
-				filechooser.setFileFilter(filter);
-				int loc = filechooser.showDialog(null, "Сохранить");
-				if (loc == JFileChooser.APPROVE_OPTION) {
-					File file = filechooser.getSelectedFile();
-					panel.SaveInfo(file.getAbsolutePath() + ".txt");
+				try {
+					JFileChooser filechooser = new JFileChooser();
+					FileNameExtensionFilter filter = new FileNameExtensionFilter("txt", "txt");
+					filechooser.setFileFilter(filter);
+					int loc = filechooser.showDialog(null, "Сохранить");
+					if (loc == JFileChooser.APPROVE_OPTION) {
+						File file = filechooser.getSelectedFile();
+						panel.SaveInfo(file.getAbsolutePath() + ".txt");
+						logger.info("Сохранение прошло успешно");
+						JOptionPane.showMessageDialog(null, "Сохранение прошло успешно");
+					}
+				} catch (Exception e1) {
+					logger.info("Неизвестная ошибка");
+					JOptionPane.showMessageDialog(null, "Неизвестная ошибка");
 				}
 			}
 		});
@@ -147,14 +197,28 @@ public class FormParking {
 		JMenuItem mntmLoad = new JMenuItem("Загрузить");
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser filechooser = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("txt", "txt");
-				filechooser.setFileFilter(filter);
-				int loc = filechooser.showDialog(null, "Загрузить");
-				if (loc == JFileChooser.APPROVE_OPTION) {
-					File file = filechooser.getSelectedFile();
-					panel.LoadInfo(file.getAbsolutePath());
-					panel.repaint();
+				try {
+					JFileChooser filechooser = new JFileChooser();
+					FileNameExtensionFilter filter = new FileNameExtensionFilter("txt", "txt");
+					filechooser.setFileFilter(filter);
+					int loc = filechooser.showDialog(null, "Загрузить");
+					if (loc == JFileChooser.APPROVE_OPTION) {
+						File file = filechooser.getSelectedFile();
+						panel.LoadInfo(file.getAbsolutePath());
+						JOptionPane.showMessageDialog(null, "Загрузили");
+						logger.info("Загрузили");
+						panel.repaint();
+					} else {
+						logger.info("Не удалось загрузить");
+						JOptionPane.showMessageDialog(null, "Не удалось загрузить");
+					}
+				} catch (ParkingOccupiedPlaceException ex) {
+					logger_error.warning("Ошибка загрузки " + ex.getMessage());
+					JOptionPane.showMessageDialog(frame, ex.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
+				} catch (Exception ex) {
+					logger_error.warning("Неизвестная ошибка при загрузке");
+					JOptionPane.showMessageDialog(frame, "Неизвестная ошибка при загрузке", "Exception",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -166,14 +230,22 @@ public class FormParking {
 		JMenuItem mntmLevelSave = new JMenuItem("Сохранить");
 		mntmLevelSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser filechooser = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("lvl", "lvl");
-				filechooser.setFileFilter(filter);
-				int loc = filechooser.showDialog(null, "Сохранить");
-				if (loc == JFileChooser.APPROVE_OPTION) {
-					File file = filechooser.getSelectedFile();
-					panel.SavePresentLevel(file.getAbsolutePath() + ".lvl");
-					panel.repaint();
+				try {
+					JFileChooser filechooser = new JFileChooser();
+					FileNameExtensionFilter filter = new FileNameExtensionFilter("lvl", "lvl");
+					filechooser.setFileFilter(filter);
+					int loc = filechooser.showDialog(null, "Сохранить");
+					if (loc == JFileChooser.APPROVE_OPTION) {
+						File file = filechooser.getSelectedFile();
+						panel.SavePresentLevel(file.getAbsolutePath() + ".lvl");
+						logger.info("Сохранение прошло успешно");
+						JOptionPane.showMessageDialog(null, "Сохранение прошло успешно");
+						panel.repaint();
+					}
+				} catch (Exception ex) {
+					logger_error.warning("Неизвестная ошибка при сохранении");
+					JOptionPane.showMessageDialog(frame, "Неизвестная ошибка при сохранении", "Exception",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -182,14 +254,28 @@ public class FormParking {
 		JMenuItem mntmLevelLoad = new JMenuItem("Загрузить");
 		mntmLevelLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser filechooser = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("lvl", "lvl");
-				filechooser.setFileFilter(filter);
-				int loc = filechooser.showDialog(null, "Загрузить");
-				if (loc == JFileChooser.APPROVE_OPTION) {
-					File file = filechooser.getSelectedFile();
-					panel.LoadPresentLevel(file.getAbsolutePath());
-					panel.repaint();
+				try {
+					JFileChooser filechooser = new JFileChooser();
+					FileNameExtensionFilter filter = new FileNameExtensionFilter("lvl", "lvl");
+					filechooser.setFileFilter(filter);
+					int loc = filechooser.showDialog(null, "Загрузить");
+					if (loc == JFileChooser.APPROVE_OPTION) {
+						File file = filechooser.getSelectedFile();
+						panel.LoadPresentLevel(file.getAbsolutePath());
+						JOptionPane.showMessageDialog(null, "Загрузили");
+						logger.info("Загрузили");
+						panel.repaint();
+					} else {
+						logger.info("Не удалось загрузить");
+						JOptionPane.showMessageDialog(null, "Не удалось загрузить");
+					}
+				} catch (IOException ex) {
+					logger_error.warning("Неизвестная ошибка при загрузке " + ex.getMessage());
+					JOptionPane.showMessageDialog(frame, "Неизвестная ошибка при загрузке" + ex.getMessage(),
+							"Exception", JOptionPane.ERROR_MESSAGE);
+				} catch (ParkingOccupiedPlaceException ex) {
+					logger_error.warning("Ошибка загрузки" + ex.getMessage());
+					JOptionPane.showMessageDialog(frame, ex.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
