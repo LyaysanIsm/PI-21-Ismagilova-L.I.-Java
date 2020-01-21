@@ -89,6 +89,7 @@ public class FormParking {
 		}
 
 		frame = new JFrame();
+		frame.setTitle("Ангар");
 		frame.setBounds(100, 100, 1000, 580);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
