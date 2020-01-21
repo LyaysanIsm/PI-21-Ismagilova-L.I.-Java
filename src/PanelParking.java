@@ -3,13 +3,13 @@ import java.io.IOException;
 import javax.swing.JPanel;
 
 public class PanelParking extends JPanel {
-	public PanelParking() {
-	}
-
-	MultiLevelParking parking = new MultiLevelParking(15, 800, 600);
 
 	private final int countLevel = 5;
 	private int presentLevel = 0;
+	MultiLevelParking parking = new MultiLevelParking(countLevel, 800, 600);
+
+	public PanelParking() {
+	}
 
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -22,7 +22,7 @@ public class PanelParking extends JPanel {
 		}
 	}
 
-	public int Add(ITransport transport) {
+	public int Add(ITransport transport) throws ParkingOverflowException, ParkingAlreadyHaveException {
 		return parking.getParking(presentLevel).Add(transport);
 	}
 
@@ -49,5 +49,13 @@ public class PanelParking extends JPanel {
 
 	public void LoadPresentLevel(String filename) throws IOException, ParkingOccupiedPlaceException {
 		parking.LoadLevel(filename);
+	}
+
+	public void sort() {
+		parking.sort();
+	}
+
+	public String getProperties() {
+		return parking.getProperties();
 	}
 }

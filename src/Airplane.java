@@ -1,15 +1,17 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Iterator;
 
-public class Airplane extends Vehicle {
+public class Airplane extends Vehicle implements Comparable<Airplane>, Iterable<String>, Iterator<String> {
 	protected final int planeWidth = 90;
 	protected final int planeHeight = 50;
 	public boolean Keel;
 	public boolean Cabin;
 	protected IWeapons weapons;
 	public int m;
+	private int curIndex = -1;
 
-	public Airplane(int maxSpeed, float weight, Color mainColor, boolean keel, boolean cabin, int m) {
+	public Airplane(int maxSpeed, int weight, Color mainColor, boolean keel, boolean cabin, int m) {
 		MaxSpeed = maxSpeed;
 		Weight = weight;
 		MainColor = mainColor;
@@ -21,7 +23,7 @@ public class Airplane extends Vehicle {
 		String[] strs = info.split(";");
 		if (strs.length == 5) {
 			MaxSpeed = Integer.parseInt(strs[0]);
-			Weight = Float.parseFloat(strs[1]);
+			Weight = Integer.parseInt(strs[1]);
 			MainColor = new Color(Integer.parseInt(strs[2]));
 			Keel = Boolean.parseBoolean(strs[3]);
 			Cabin = Boolean.parseBoolean(strs[4]);
@@ -90,5 +92,63 @@ public class Airplane extends Vehicle {
 			g.fillOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
 			g.drawOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
 		}
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Airplane other = (Airplane) obj;
+		if (!MainColor.equals(other.MainColor))
+			return false;
+		if (Keel != other.Keel)
+			return false;
+		if (Cabin != other.Cabin)
+			return false;
+		return true;
+	}
+
+	@Override
+	public int compareTo(Airplane other) {
+		if (other == null)
+			return 1;
+		if (MaxSpeed != other.MaxSpeed)
+			return Integer.compare(MaxSpeed, other.MaxSpeed);
+		if (MainColor != other.MainColor)
+			return Integer.compare(MainColor.getRGB(), other.MainColor.getRGB());
+		if (Weight != other.Weight)
+			return Integer.compare(Weight, other.Weight);
+		if (Keel != other.Keel)
+			return Boolean.compare(Keel, other.Keel);
+		if (Cabin != other.Cabin)
+			return Boolean.compare(Cabin, other.Cabin);
+		return 0;
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	@Override
+	public boolean hasNext() {
+		if (curIndex + 1 >= ToString().split(";").length) {
+			curIndex = -1;
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String next() {
+		curIndex++;
+		return ToString().split(";")[curIndex];
+	}
+
+	@Override
+	public Iterator<String> iterator() {
+		return this;
 	}
 }

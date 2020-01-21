@@ -35,7 +35,7 @@ public class FormParking {
 
 	class Delegate extends AirplaneDelegate {
 		@Override
-		public void induce(ITransport airplane) {
+		public void induce(ITransport airplane) throws ParkingOverflowException, ParkingAlreadyHaveException {
 			panel.Add(airplane);
 			panel.repaint();
 		}
@@ -280,5 +280,28 @@ public class FormParking {
 			}
 		});
 		mnLevel.add(mntmLevelLoad);
+
+		JButton btnSort = new JButton("\u0421\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C");
+		btnSort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panel.sort();
+				panel.repaint();
+				logger.info("Сортировка уровней");
+			}
+		});
+		btnSort.setBounds(703, 428, 122, 23);
+		frame.getContentPane().add(btnSort);
+
+		JButton btnShowProperties = new JButton("\u0421\u0432\u043E\u0439\u0441\u0442\u0432\u0430");
+		btnShowProperties.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Properties properties = new Properties();
+				properties.showProperties(panel.getProperties());
+				properties.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				properties.setVisible(true);
+			}
+		});
+		btnShowProperties.setBounds(705, 454, 120, 23);
+		frame.getContentPane().add(btnShowProperties);
 	}
 }
