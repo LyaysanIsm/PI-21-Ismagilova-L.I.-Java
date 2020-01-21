@@ -140,6 +140,9 @@ public class FormAirplaneConfig {
 					logger_error.warning("Парковка переполнена");
 					JOptionPane.showMessageDialog(frame, "Парковка переполнена", "Exception",
 							JOptionPane.ERROR_MESSAGE);
+				} catch (ParkingAlreadyHaveException ex) {
+					logger_error.warning("В ангаре уже есть такой самолет");
+					JOptionPane.showMessageDialog(frame, "В ангаре уже есть такой самолет");
 				}
 			}
 		});

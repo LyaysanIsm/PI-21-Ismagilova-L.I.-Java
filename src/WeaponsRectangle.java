@@ -46,4 +46,18 @@ public class WeaponsRectangle implements IWeapons {
 			g.fillRect(PosX - 20 + n * i, PosY + 5, 8 / 2, 22 / 2);
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		return true;
+	}
 }

@@ -2,6 +2,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MultiLevelParking {
 
@@ -40,17 +41,14 @@ public class MultiLevelParking {
 		WriteToFile("CountLeveles:" + parkingStages.size() + "\n", fw);
 		for (Parking<ITransport, IWeapons> level : parkingStages) {
 			WriteToFile("Level" + "\n", fw);
-			for (int i = 0; i < countPlaces; i++) {
-				ITransport airplane = level.getTransport(i);
-				if (airplane != null) {
-					if (airplane.getClass().getName() == "Airplane") {
-						WriteToFile(i + ":Airplane:", fw);
-					}
-					if (airplane.getClass().getName() == "Fighter") {
-						WriteToFile(i + ":Fighter:", fw);
-					}
-					WriteToFile(airplane.ToString() + "\n", fw);
+			for (ITransport airplane : level) {
+				if (airplane.getClass().getName() == "Airplane") {
+					WriteToFile(level.getKey() + ":Airplane:", fw);
 				}
+				if (airplane.getClass().getName() == "Fighter") {
+					WriteToFile(level.getKey() + ":Fighter:", fw);
+				}
+				WriteToFile(airplane.ToString() + "\n", fw);
 			}
 		}
 		fw.flush();
@@ -104,26 +102,26 @@ public class MultiLevelParking {
 		return true;
 	}
 
-	public boolean SaveLevel(String filename, int lvl) throws IOException {		
-			if ((lvl > parkingStages.size()) || (lvl < 0)) {
-				return false;
-			}
-			FileWriter fw = new FileWriter(filename);
-			WriteToFile("Level:" + lvl + "\n", fw);
-			Parking<ITransport, IWeapons> level = parkingStages.get(lvl);
-			for (int i = 0; i < countPlaces; i++) {
-				ITransport airplane = level.getTransport(i);
-				if (airplane != null) {
-					if (airplane.getClass().getName() == "Airplane") {
-						WriteToFile(i + ":Airplane:", fw);
-					}
-					if (airplane.getClass().getName() == "Fighter") {
-						WriteToFile(i + ":Fighter:", fw);
-					}
-					WriteToFile(airplane.ToString() + "\n", fw);
+	public boolean SaveLevel(String filename, int lvl) throws IOException {
+		if ((lvl > parkingStages.size()) || (lvl < 0)) {
+			return false;
+		}
+		FileWriter fw = new FileWriter(filename);
+		WriteToFile("Level:" + lvl + "\n", fw);
+		Parking<ITransport, IWeapons> level = parkingStages.get(lvl);
+		for (int i = 0; i < countPlaces; i++) {
+			ITransport airplane = level.getTransport(i);
+			if (airplane != null) {
+				if (airplane.getClass().getName() == "Airplane") {
+					WriteToFile(i + ":Airplane:", fw);
 				}
+				if (airplane.getClass().getName() == "Fighter") {
+					WriteToFile(i + ":Fighter:", fw);
+				}
+				WriteToFile(airplane.ToString() + "\n", fw);
 			}
-			fw.flush();		
+		}
+		fw.flush();
 		return true;
 	}
 
@@ -164,5 +162,19 @@ public class MultiLevelParking {
 			}
 		}
 		return true;
+	}
+
+	public String getProperties() {
+		String res = "";
+		for (Parking<ITransport, IWeapons> level : parkingStages) {
+			for (ITransport airplane : level) {
+				res = res + airplane.ToString() + "\n";
+			}
+		}
+		return res;
+	}
+
+	public void sort() {
+		Collections.sort(parkingStages);
 	}
 }

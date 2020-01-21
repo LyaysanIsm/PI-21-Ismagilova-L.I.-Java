@@ -9,8 +9,9 @@ public class Fighter extends Airplane {
 	public boolean Bullets;
 	public boolean Keel;
 	public boolean Cabin;
+	protected IWeapons weapons;
 
-	public Fighter(int maxSpeed, float weight, Color mainColor, Color dopColor, boolean bombs, boolean bullets,
+	public Fighter(int maxSpeed, int weight, Color mainColor, Color dopColor, boolean bombs, boolean bullets,
 			boolean keel, boolean cabin, int m) {
 		super(maxSpeed, weight, mainColor, keel, cabin, (int) (Math.random() * 3));
 		DopColor = dopColor;
@@ -26,7 +27,7 @@ public class Fighter extends Airplane {
 		String[] strs = info.split(";");
 		if (strs.length == 7) {
 			MaxSpeed = Integer.parseInt(strs[0]);
-			Weight = Float.parseFloat(strs[1]);
+			Weight = Integer.parseInt(strs[1]);
 			MainColor = new Color(Integer.parseInt(strs[2]));
 			Keel = Boolean.parseBoolean(strs[3]);
 			Cabin = Boolean.parseBoolean(strs[4]);
@@ -106,5 +107,51 @@ public class Fighter extends Airplane {
 			g.drawOval(_startPosX + 98 / 3, _startPosY + 120 / 3, 5 / 3, 30 / 3);
 		}
 		weapons.DrawWeapons(g, Color.black, _startPosX + 48 / 3, _startPosY + 43 / 3);
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass()) {
+			return false;
+		} else {
+			return equals((Fighter) obj);
+		}
+	}
+
+	public boolean equals(Fighter other) {
+		if (!MainColor.equals(other.MainColor))
+			return false;
+		if (!DopColor.equals(other.DopColor))
+			return false;
+		if (Keel != other.Keel)
+			return false;
+		if (Cabin != other.Cabin)
+			return false;
+		if (Bombs != other.Bombs)
+			return false;
+		return true;
+	}
+
+	public int compareTo(Fighter other) {
+		if (other == null)
+			return 1;
+		if (!MainColor.equals(other.MainColor))
+			return Integer.compare(MainColor.getRGB(), other.MainColor.getRGB());
+		if (!DopColor.equals(other.DopColor))
+			return Integer.compare(DopColor.getRGB(), other.DopColor.getRGB());
+		if (Keel != other.Keel)
+			return Boolean.compare(Keel, other.Keel);
+		if (Cabin != other.Cabin)
+			return Boolean.compare(Cabin, other.Cabin);
+		if (Bombs != other.Bombs)
+			return Boolean.compare(Bombs, other.Bombs);
+		return 0;
 	}
 }

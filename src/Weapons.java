@@ -46,4 +46,18 @@ public class Weapons implements IWeapons {
 			g.fillOval(PosX - 20 + n * i, PosY + 5, 5 / 2, 25 / 2);
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		return true;
+	}
 }

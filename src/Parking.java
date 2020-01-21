@@ -1,8 +1,10 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.HashMap;
+import java.util.Iterator;
 
-public class Parking<T extends ITransport, K extends IWeapons> {
+public class Parking<T extends ITransport, K extends IWeapons>
+		implements Comparable<Parking<T, K>>, Iterable<T>, Iterator<T> {
 	HashMap<Integer, T> _places;
 
 	private int PictureWidth;
@@ -11,6 +13,7 @@ public class Parking<T extends ITransport, K extends IWeapons> {
 	private final int _placeSizeWidth = 210;
 	private final int _placeSizeHeight = 80;
 	int _maxCount;
+	private int curIndex;
 
 	public Parking(int sizes, int pictureWidth, int pictureHeight) {
 		_places = new HashMap<Integer, T>(sizes);
@@ -51,7 +54,9 @@ public class Parking<T extends ITransport, K extends IWeapons> {
 		throw new ParkingOccupiedPlaceException(index);
 	}
 
-	public int Add(T airplane) throws ParkingOverflowException {
+	public int Add(T airplane) throws ParkingOverflowException, ParkingAlreadyHaveException {
+		if (_places.containsValue(airplane))
+			throw new ParkingAlreadyHaveException();
 		for (int i = 0; i < _maxCount; i++) {
 			if (CheckFreePlace(i)) {
 				_places.put(i, airplane);
@@ -101,5 +106,62 @@ public class Parking<T extends ITransport, K extends IWeapons> {
 			}
 			g.drawLine(i * _placeSizeWidth, 0, i * _placeSizeWidth, 400);
 		}
+	}
+
+	public int getKey() {
+		return (int) _places.keySet().toArray()[curIndex];
+	}
+
+	@Override
+	public boolean hasNext() {
+		if ((curIndex + 1) >= _places.size()) {
+			curIndex = -1;
+			return false;
+		} else
+			return true;
+	}
+
+	@Override
+	public T next() {
+		curIndex++;
+		return _places.get(curIndex);
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return this;
+	}
+
+	@Override
+	public int compareTo(Parking<T, K> other) {
+		if (_places.size() > other._places.size())
+			return -1;
+		else if (_places.size() < other._places.size())
+			return 1;
+		else if (_places.size() > 0) {
+			Object[] thisKeys = _places.keySet().toArray();
+			Object[] otherKeys = other._places.keySet().toArray();
+			for (int i = 0; i < _places.size(); ++i) {
+				if (_places.get(thisKeys[i]).getClass().getName().equals("Airplane")
+						&& other._places.get(thisKeys[i]).getClass().getName().equals("Fighter"))
+					return 1;
+				if (_places.get(thisKeys[i]).getClass().getName().equals("Fighter")
+						&& other._places.get(thisKeys[i]).getClass().getName().equals("Airplane"))
+					return -1;
+				if (_places.get(thisKeys[i]).getClass().getName().equals("Airplane")
+						&& other._places.get(thisKeys[i]).getClass().getName().equals("Airplane")) {
+					Airplane thisAirplane = (Airplane) _places.get(thisKeys[i]);
+					Airplane otherAirplane = (Airplane) other._places.get(otherKeys[i]);
+					return thisAirplane.compareTo(otherAirplane);
+				}
+				if (_places.get(thisKeys[i]).getClass().getName().equals("Fighter")
+						&& other._places.get(thisKeys[i]).getClass().getName().equals("Fighter")) {
+					Fighter thisAirplane = (Fighter) _places.get(thisKeys[i]);
+					Fighter otherAirplane = (Fighter) other._places.get(otherKeys[i]);
+					return thisAirplane.compareTo(otherAirplane);
+				}
+			}
+		}
+		return 0;
 	}
 }
